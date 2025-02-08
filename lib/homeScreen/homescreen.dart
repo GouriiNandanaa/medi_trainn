@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:medii/aiMedGuide/ai_med_guide.dart';
+import 'package:medii/ai_assistant/ai_med_guide.dart';
 import 'package:medii/authentication/home_screen_first.dart';
+import 'package:medii/doc_on_track/doc_on_track.dart';
+import 'package:medii/medical_care_hsptl/station_care_page.dart';
+import 'package:medii/medicine_delivery/med_express_page.dart';
+import 'package:medii/profiles/profile_update_page.dart';
+import 'package:medii/smart_pnr/smart_pnr_tracker_page.dart';
+import 'package:medii/track_my_med/track_my_med.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../DEMO/gg.dart'; // Make sure this file contains LoginScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,16 +18,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Map<String, String>> features = [
-    {"title": "MedExpress", "subtitle": "Order medicine on the go", "image": "assets/images/med_express.png"},
-    {"title": "TrackMyMeds", "subtitle": "Live tracking of your order", "image": "assets/images/track_meds.png"},
-    {"title": "DocOnTrack", "subtitle": "Consult a doctor instantly", "image": "assets/images/doc_on_track.png"},
-    {"title": "SmartPNR Drop", "subtitle": "Auto-detect train, coach, and seat", "image": "assets/images/smart_pnr.png"},
-    {"title": "AI MedGuide", "subtitle": "Get AI-powered medicine suggestions", "image": "assets/images/ai_medguide.png"},
-    {"title": "StationCare", "subtitle": "Find nearby medical help", "image": "assets/images/station_care.png"},
-    {"title": "HealthAssist 24/7", "subtitle": "Chat or call support anytime", "image": "assets/images/health_assist.png"},
-    {"title": "Profile Update", "subtitle": "Update your profile", "image": "assets/images/pro_update.png"},
+  final List<Map<String, dynamic>> features = [
+    {"title": "MedExpress", "subtitle": "Order medicine on the go", "image": "assets/images/med_express.png", "page": MedExpressPage()},
+    {"title": "TrackMyMeds", "subtitle": "Live tracking of your order", "image": "assets/images/track_meds.png", "page": TrackMyMedsPage()},
+    {"title": "DocOnTrack", "subtitle": "Consult a doctor instantly", "image": "assets/images/doc_on_track.png", "page": DocOnTrackPage()},
+    {"title": "SmartPNR Tracker", "subtitle": "Real-time train location tracking", "image": "assets/images/smart_pnr.png", "page": SmartPNRTrackerPage()},
+    {"title": "AI MedGuide", "subtitle": "Get AI-powered medicine suggestions", "image": "assets/images/ai_medguide.png", "page": AIMedGuidePage()},
+    {"title": "StationCare", "subtitle": "Find nearby medical help", "image": "assets/images/station_care.png", "page": StationCarePage()},
+    {"title": "HealthAssist 24/7", "subtitle": "Chat or call support anytime", "image": "assets/images/health_assist.png", "page": HealthAssistPage()},
+    {"title": "Profile Update", "subtitle": "Update your profile", "image": "assets/images/pro_update.png", "page": ProfileUpdatePage()},
   ];
+
   void _confirmLogout(BuildContext context) {
     showDialog(
       context: context,
@@ -59,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
   void _logout(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('isLoggedIn'); // Clear login status
@@ -70,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
           (route) => false, // Removes all previous routes
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -101,6 +106,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     title: features[index]["title"]!,
                     subtitle: features[index]["subtitle"]!,
                     imagePath: features[index]["image"]!,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => features[index]["page"] as Widget),
+                      );
+                    },
                   );
                 },
                 childCount: features.length,
@@ -123,26 +134,43 @@ class FeatureCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String imagePath;
+  final VoidCallback onTap;
 
-  const FeatureCard({required this.title, required this.subtitle, required this.imagePath});
+  const FeatureCard({required this.title, required this.subtitle, required this.imagePath, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 4,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(imagePath, height: 80),
-          SizedBox(height: 10),
-          Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(subtitle, textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.grey[700])),
-          ),
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 4,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(imagePath, height: 80),
+            SizedBox(height: 10),
+            Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(subtitle, textAlign: TextAlign.center, style: TextStyle(fontSize: 12, color: Colors.grey[700])),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+// Placeholder Pages
+
+
+
+
+
+
+
+
+
+
+

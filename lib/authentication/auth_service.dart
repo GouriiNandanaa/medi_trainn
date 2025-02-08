@@ -46,7 +46,7 @@ class AuthService {
     print("\n\n The email is $email, \nThe password is $password\n\n\n");
 
     final response = await http.post(
-      Uri.parse('$baseUrl/signin'),
+      Uri.parse('$baseUrl/login'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email, 'password': password}),
     );
