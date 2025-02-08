@@ -92,6 +92,11 @@ We welcome contributions! If you’d like to contribute:
 
 ---
 
+## **💾 Download APK**
+📂 **[Download Latest Release](https://drive.google.com/drive/folders/1LZ5dfNRvxpTTkcmTpjfdp-46x_iSZn89?usp=drive_link)**
+
+---
+
 ## **📧 Contact**
 For any queries or suggestions, feel free to reach out:  
 📧 Email: [gourinandana682003@gmail.com](mailto:gourinandana682003@gmail.com)  
