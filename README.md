@@ -94,8 +94,8 @@ We welcome contributions! If you’d like to contribute:
 
 ## **📧 Contact**
 For any queries or suggestions, feel free to reach out:  
-📧 Email: [your-email@example.com](mailto:your-email@example.com)  
-📄 GitHub: [github.com/your-username](https://github.com/your-username)  
+📧 Email: [gourinandana682003@gmail.com](mailto:gourinandana682003@gmail.com)  
+📄 GitHub: [github.com/GouriiNandanaa](https://github.com/GouriiNandanaa)  
 
 ---
 
