@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:medii/smart_pnr/printing_location_page.dart';
 import 'package:medii/smart_pnr/smart_pnr_service.dart';
-import '../models/train_station_model.dart'; // Import the model
+import '../models/train_station_model.dart';
 
 class SmartPNRTrackerPage extends StatefulWidget {
   @override
@@ -11,44 +12,46 @@ class SmartPNRTrackerPage extends StatefulWidget {
 
 class _SmartPNRTrackerPageState extends State<SmartPNRTrackerPage> {
   final TextEditingController _trainController = TextEditingController();
+  TrainStationModel? _trainData;
 
-  // Function to fetch train location and parse into TrainStationModel
+  String _getTodayDate() {
+    return DateFormat('yyyyMMdd').format(DateTime.now());
+  }
+
   void _fetchTrainLocation() async {
     String trainNumber = _trainController.text.trim();
     if (trainNumber.isEmpty) {
-      print("Please enter a valid train number");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Please enter a valid train number")),
+      );
       return;
     }
 
+    String departureDate = _getTodayDate();
+
     try {
-      String locationJson = await SmartPNRService.location(trainNumber);
-      Map<String, dynamic> jsonData = jsonDecode(locationJson);
+      String response = await SmartPNRService.location(trainNumber);
+      Map<String, dynamic> jsonData = jsonDecode(response);
 
-      // Ensure the response has valid train data
-      if (jsonData.containsKey("body") &&
-          jsonData["body"].isNotEmpty &&
-          jsonData["body"][0].containsKey("trains") &&
-          jsonData["body"][0]["trains"].isNotEmpty) {
-
-        // Extract train details
-        var trainData = jsonData["body"][0]["trains"][0];
-
-        // Convert to TrainStationModel
-        TrainStationModel train = TrainStationModel.fromJson(trainData);
-
-        // Navigate to PrintingLocationPage with parsed train data
+      if (jsonData["code"] == 200 && jsonData["status"]["result"] == "success" && jsonData["body"] != null) {
+        setState(() {
+          _trainData = TrainStationModel.fromJson(jsonData["body"]);
+        });
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => PrintingLocationPage(train: train),
+            builder: (context) => PrintingLocationPage(train: _trainData!),
           ),
         );
-
       } else {
-        print("No train data found in API response");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("No train data found for train number: $trainNumber")),
+        );
       }
     } catch (e) {
-      print("Error fetching location: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Error fetching location for train number: $trainNumber. Error: $e")),
+      );
     }
   }
 
