@@ -68,7 +68,8 @@ npm install  # Install backend dependencies
 #### Start Backend
 ```sh
 cd backend
-node server.js
+npm i
+npm run dev
 ```
 #### Start Flutter App
 ```sh
