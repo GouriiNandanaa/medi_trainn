@@ -89,7 +89,7 @@ This project is **open-source** and available under the **MIT License**.
 https://github.com/Charchika-19/Medi-Train
 
 - **Backend:**   GitHub: [github.com/Aifa1234]([https://github.com/Aifa1234.(https://github.com/Aifa1234/backend))  
-https://github.com/Charchika-19/Medi-Train
+https://github.com/Aifa1234/backend
 
   
 
